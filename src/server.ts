@@ -1,4 +1,8 @@
 import express, { Request, Response } from "express";
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.join(process.cwd(),".env") });
 import { Pool } from "pg";
 const app = express();
 const port = 5000;
@@ -7,7 +11,7 @@ app.use(express.json());
 // app.use(express.urlencoded());
 
 const pool = new Pool({
-  connectionString: `postgresql://neondb_owner:npg_ve4mtq0ykDUf@ep-quiet-tooth-a4qp59h7-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require`,
+  connectionString: `${process.env.CONNECTION_STR}`,
 });
 
 const initDB = async () => {
@@ -23,9 +27,21 @@ const initDB = async () => {
         updated_at TIMESTAMP DEFAULT NOW()
         )
         `);
+
+  await pool.query(`
+            CREATE TABLE IF NOT EXISTS todos(
+            id SERIAL PRIMARY KEY,
+            user_id INT REFERENCES users(id) ON DELETE CASCADE,
+            title VARCHAR(200) NOT NULL,
+            description TEXT,
+            completed BOOLEAN DEFAULT false,
+            due_date DATE,
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW()
+            )`);
 };
 
-initDB()
+initDB();
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello Next Level Web Developer!");
