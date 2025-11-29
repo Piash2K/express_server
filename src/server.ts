@@ -1,3 +1,4 @@
+import { Response } from "./../node_modules/@types/express-serve-static-core/index.d";
 import { Message } from "./../node_modules/esbuild/lib/main.d";
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
@@ -48,6 +49,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello Next Level Web Developer!");
 });
 
+// users CRUD
 app.post("/users", async (req: Request, res: Response) => {
   const { name, email } = req.body;
 
@@ -68,12 +70,51 @@ app.post("/users", async (req: Request, res: Response) => {
       message: error.message,
     });
   }
-  res.status(201).json({
-    success: true,
-    message: "API is working",
-  });
 });
 
+app.get("/users", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM users`);
+    res.status(200).json({
+      success: true,
+      message: "Users retrieved successfully",
+      data: result.rows,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      details: error,
+    });
+  }
+});
+
+app.get("/users/:id", async (req: Request, res: Response) => {
+  //   console.log(req.params.id)
+  try {
+    const result = await pool.query(`SELECT * FROM users WHERE id= $1`, [
+      req.params.id,
+    ]);
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "User fetched successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      details: error,
+    });
+  }
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
