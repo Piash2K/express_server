@@ -44,12 +44,12 @@ const initDB = async () => {
 initDB();
 
 //logger middleware
-const logger = (req: Request, res: Response,next: NextFunction)=>{
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} \n`)
-  next()
-}
+const logger = (req: Request, res: Response, next: NextFunction) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} \n`);
+  next();
+};
 
-app.get("/",logger, (req: Request, res: Response) => {
+app.get("/", logger, (req: Request, res: Response) => {
   res.send("Hello Next Level Web Developer!");
 });
 
@@ -211,13 +211,37 @@ app.get("/todos", async (req: Request, res: Response) => {
   }
 });
 
-app.use((req,res)=>{
+app.get("/todos/:id", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM todos WHERE id=$1`, [
+      req.params.id,
+    ]);
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "todo not found",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Single todo fetched successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: "Route not found",
-    path: req.path
-  })
-})
+    path: req.path,
+  });
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
