@@ -19,7 +19,7 @@ app.get("/", logger, (req: Request, res: Response) => {
 });
 
 // users CRUD
-app.use("/users", userRoutes.router);
+app.use("/users", userRoutes);
 
 app.get("/users/:id", async (req: Request, res: Response) => {
   //   console.log(req.params.id)
