@@ -25,9 +25,15 @@ const updateTodo = async (user_id: string, title: string, id: string) => {
   );
   return result;
 };
+
+const deleteTodo = async (id: string) => {
+  const result = await pool.query(`DELETE FROM todos WHERE id=$1`, [id]);
+  return result;
+};
 export const todoServices = {
   createTodo,
   getTodo,
   getSingleTodo,
   updateTodo,
+  deleteTodo,
 };
