@@ -25,34 +25,6 @@ app.use("/users", userRoutes);
 //todo crud
 app.use("/todos", todoRoutes)
 
-
-app.put("/todos/:id", async (req: Request, res: Response) => {
-  const { user_id, title } = req.body;
-  try {
-    const result = await pool.query(
-      `UPDATE todos SET user_id=$1, title= $2 WHERE id=$3 RETURNING *`,
-      [user_id, title, req.params.id]
-    );
-    if (result.rows.length === 0) {
-      res.status(404).json({
-        success: false,
-        message: "todo not found to update",
-      });
-    } else {
-      res.status(201).json({
-        success: true,
-        message: "todo updated successfully",
-        data: result.rows[0],
-      });
-    }
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-});
-
 app.delete("/todos/:id", async (req: Request, res: Response) => {
   try {
     const result = await pool.query(`DELETE FROM todos WHERE id=$1`, [

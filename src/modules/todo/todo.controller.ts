@@ -57,8 +57,37 @@ const getSingleTodo = async (req: Request, res: Response) => {
     });
   }
 };
+
+const updateTodo = async (req: Request, res: Response) => {
+  const { user_id, title } = req.body;
+  try {
+    const result = await todoServices.updateTodo(
+      user_id,
+      title,
+      req.params.id as string
+    );
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "todo not found to update",
+      });
+    } else {
+      res.status(201).json({
+        success: true,
+        message: "todo updated successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 export const todoControllers = {
   createTodo,
   getTodo,
-  getSingleTodo
+  getSingleTodo,
+  updateTodo,
 };
