@@ -1,12 +1,9 @@
 
-
-````markdown
 # Express Server (TypeScript + PostgreSQL)
 
 A modern and scalable backend server built with **Express.js** and **TypeScript**, designed for secure authentication, JWT-based authorization, and PostgreSQL database integration.  
 Perfect starting point for building RESTful APIs with a professional architecture.
 
----
 
 ## 🔑 Features
 
@@ -17,7 +14,6 @@ Perfect starting point for building RESTful APIs with a professional architectur
 - ✅ **Environment configuration** using `dotenv`  
 - ✅ **Hot reload development** with `tsx watch`  
 
----
 
 ## 🛠 Tech Stack
 
@@ -28,7 +24,6 @@ Perfect starting point for building RESTful APIs with a professional architectur
 | Authentication | JWT (jsonwebtoken), bcryptjs |
 | Dev Tools      | TypeScript, tsx, dotenv |
 
----
 
 ## 🚀 Getting Started
 
@@ -115,9 +110,3 @@ Contributions are welcome!
 
 
 
----
-
-If you want, I can **also add badges at the top** for Node.js, TypeScript, Express, PostgreSQL, and NPM version to make it **look really premium** like professional open-source projects.  
-
-Do you want me to do that?
-```
