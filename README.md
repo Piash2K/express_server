@@ -1,4 +1,3 @@
-
 # Express Server (TypeScript + PostgreSQL)
 
 A modern and scalable backend server built with **Express.js** and **TypeScript**, designed for secure authentication, JWT-based authorization, and PostgreSQL database integration.  
